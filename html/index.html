@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskMaster - Quản lý tác vụ hiệu quả</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="../css/landing.css" />
+</head>
+<body>
+  <header class="landing-header">
+    <nav class="landing-nav">
+      <div class="landing-logo">
+        <i class="fas fa-tasks"></i>
+        <span>TaskMaster</span>
+      </div>
+      <ul class="landing-nav-links">
+        <li><a href="#" data-section="section-about">Giới thiệu</a></li>
+        <li><a href="#" data-section="section-features">Tính năng</a></li>
+        <li><a href="#" data-section="section-contact">Liên hệ</a></li>
+      </ul>
+      <div class="landing-auth-buttons">
+        <a href="#" class="landing-btn landing-btn-secondary">Đăng nhập</a>
+        <a href="dashboard.html" class="landing-btn landing-btn-primary">Bắt đầu</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="landing-main">
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>Quản lý tác vụ của bạn một cách dễ dàng</h1>
+        <p>TaskMaster giúp bạn tổ chức công việc, theo dõi tiến độ và hoàn thành mục tiêu một cách hiệu quả.</p>
+        <a href="dashboard.html" class="landing-btn landing-btn-primary hero-btn">Bắt đầu ngay</a>
+      </div>
+      <div class="hero-image">
+        <img src="../images/illustration.png" alt="Task Management Illustration">
+      </div>
+    </section>
+
+   <section id="section-about" class="toggle-section">
+      <h2>Giới thiệu</h2>
+      <p>
+        TaskMaster là nền tảng quản lý công việc thông minh, giúp bạn tổ chức,
+        ưu tiên và theo dõi tiến độ công việc cá nhân hoặc nhóm. Dù bạn là sinh
+        viên, nhân viên hay nhà quản lý, TaskMaster sẽ giúp bạn hoàn thành mục
+        tiêu hiệu quả hơn.
+      </p>
+    </section>
+
+    <section id="section-features" class="toggle-section">
+      <h2>Tính năng</h2>
+      <ul>
+        <li><strong>Tạo và quản lý tác vụ:</strong> thêm, sửa, xóa, phân loại theo độ ưu tiên và trạng thái.</li>
+        <li><strong>Bộ lọc và tìm kiếm thông minh:</strong> giúp bạn dễ dàng tìm thấy tác vụ cần thiết.</li>
+        <li><strong>Giao diện trực quan:</strong> dễ dùng, tối ưu cho cả desktop và mobile.</li>
+      </ul>
+    </section>
+
+    <section id="section-contact" class="toggle-section">
+     <h2>Liên hệ</h2>
+     <p>Nếu bạn có câu hỏi, góp ý hoặc cần hỗ trợ, hãy liên hệ với nhóm phát triển chúng tôi qua các nền tảng dưới đây:</p>
+
+     <div class="social-icons">
+       <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+       <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+       <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+    </div>
+
+    <div class="contact-box">
+    <h4>Gửi phản hồi</h4>
+    <form>
+      <input type="text" placeholder="Tên của bạn" required>
+      <input type="email" placeholder="Email" required>
+      <textarea placeholder="Nội dung" rows="3" required></textarea>
+      <button type="submit">Gửi</button>
+    </form>
+   </div>
+  </section>
+ 
+  </main>
+
+  <footer class="landing-footer">
+    <p>&copy; 2025 TaskMaster. Design by Group 10.</p>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.landing-nav-links a').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const sectionId = this.getAttribute('data-section');
+        document.querySelectorAll('.toggle-section').forEach(sec => {
+          sec.style.display = 'none';
+        });
+        const target = document.getElementById(sectionId);
+        if (target) {
+          target.style.display = 'block';
+          window.scrollTo({ top: target.offsetTop - 100, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
