@@ -1445,7 +1445,7 @@ body.dark-mode .calendar-grid {
 
 .calendar-weekdays-bar span {
   padding: 4px 0;
-  border-right: 1px solid rgba(255,255,255,0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .calendar-weekdays-bar span:last-child {
