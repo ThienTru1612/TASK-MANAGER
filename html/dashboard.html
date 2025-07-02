@@ -15,20 +15,36 @@
                     <i class="fas fa-tasks"></i>
                     <span>TaskMaster</span>
                 </div>
-                <div class="user-info" id="userMenu">
-                    <img src="../images/avatar.jpg" alt="User Avatar">
-                    <span>Người dùng</span>
-                    <div class="sidebar-menu" id="userDropdown">
-                        <div class="menu-header">
-                            <i class="fas fa-chevron-up"></i>
-                        </div>
-                        <ul>
-                            <li><i class="fas fa-user"></i> Thông tin cá nhân</li>
-                            <li><i class="fas fa-lock"></i> Đổi mật khẩu trang sinh viên</li>
-                            <li><i class="fas fa-th-large"></i> Đổi mật khẩu Microsoft</li>
-                            <li><i class="fab fa-google"></i> Đổi mật khẩu Google</li>
-                            <li><i class="fas fa-sign-out-alt"></i> Đăng xuất</li>
-                        </ul>
+                <div class="user-interaction">
+                    <label class="switch">
+                        <input class="switch__input" type="checkbox" role="switch" id="darkModeToggle">
+                        <svg class="switch__letters" viewBox="0 0 24 24" width="24px" height="24px" aria-hidden="true">
+                            <g stroke="currentcolor" stroke-linecap="round" stroke-width="4" transform="translate(0,4)">
+                                <g class="switch__letter">
+                                    <polyline class="switch__letter-stroke" points="2 2,2 14" />
+                                    <polyline class="switch__letter-stroke" points="2 2,16 2" stroke-dasharray="14 16" stroke-dashoffset="8" transform="rotate(0,2,2)" />
+                                    <polyline class="switch__letter-stroke" points="2 8,6 8" stroke-dasharray="4 6" />
+                                </g>
+                                <g class="switch__letter" transform="translate(14,0)">
+                                    <polyline class="switch__letter-stroke" points="2 2,2 14" />
+                                    <polyline class="switch__letter-stroke" points="2 2,8 2" stroke-dasharray="6 8" />
+                                    <polyline class="switch__letter-stroke" points="2 8,6 8" stroke-dasharray="4 6" />
+                                </g>
+                            </g>
+                        </svg>
+                        <span class="switch__text"></span>
+                    </label>
+                    <div class="icon-notification-message">
+                        <i class="fas fa-bell notification-icon"></i>
+                        <span class="badge notification-badge">5</span>
+                    </div>
+                    <div class="icon-notification-message">
+                        <i class="fas fa-envelope message-icon"></i>
+                        <span class="badge message-badge">2</span>
+                    </div>
+                    <div class="user-info">
+                        <img src="../images/avatar.jpg" alt="User Avatar">
+                        <span></span>
                     </div>
                 </div>
             </nav>
@@ -36,43 +52,83 @@
 
         <div class="main-content">
             <div class="sidebar">
-                <div class="sidebar-menu">
-                    <h3>Menu</h3>
-                    <ul>
-                        <li><a href="#" class="active"><i class="fas fa-home"></i> Trang chủ</a></li>
-                        <li><a href="#"><i class="fas fa-inbox"></i> Tất cả tác vụ</a></li>
-                        <li><a href="#"><i class="fas fa-calendar-alt"></i> Lịch</a></li>
-                        <li><a href="#"><i class="fas fa-chart-bar"></i> Thống kê</a></li>
-                        <li><a href="#"><i class="fas fa-users"></i> Nhóm</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-menu">
-                    <h3>Danh mục</h3>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-briefcase"></i> Công việc</a></li>
-                        <li><a href="#"><i class="fas fa-book"></i> Học tập</a></li>
-                        <li><a href="#"><i class="fas fa-heart"></i> Cá nhân</a></li>
-                    </ul>
-                </div>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" id="tasksViewBtn" data-category-filter="all"><i class="fas fa-home"></i> <span>Tác vụ</span></a></li>
+                    <li><a href="#" id="calendarViewBtn"><i class="fas fa-calendar-alt"></i> <span>Lịch</span></a></li>
+                    <li><a href="#" id="statisticsViewBtn"><i class="fas fa-chart-bar"></i> <span>Thống kê</span></a></li>
+                    <li><a href="#" id="groupCategoryLink" data-category-filter="group"><i class="fas fa-users"></i> <span>Nhóm</span></a></li>
+                    <li><a href="#" id="workCategoryLink" data-category-filter="work"><i class="fas fa-briefcase"></i> <span>Công việc</span></a></li>
+                    <li><a href="#" id="studyCategoryLink" data-category-filter="study"><i class="fas fa-book"></i> <span>Học tập</span></a></li>
+                    <li><a href="#" id="personalCategoryLink" data-category-filter="personal"><i class="fas fa-heart"></i> <span>Cá nhân</span></a></li>
+                </ul>
             </div>
 
-            <div class="task-section">
-                <div class="task-header">
-                    <input type="text" id="searchInput" placeholder="Tìm kiếm tác vụ..." class="form-control" style="max-width: 250px;">
-                    <h2><i class="fas fa-list-ul"></i> Danh sách tác vụ</h2>
-                    <button id="addTaskBtn" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm tác vụ</button>
+            <div class="task-section active" id="taskSection">
+                <div class="header">
+                    <h1>Danh sách tác vụ</h1>
+                    <div class="header-right">
+                        <div class="search-icon-container">
+                            <i class="fas fa-search search-toggle-icon"></i>
+                        </div>
+                        <div class="search-input-container">
+                            <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm tác vụ...">
+                        </div>
+                        <button class="btn btn-primary" id="addTaskBtn"><i class="fas fa-plus"></i> Thêm tác vụ</button>
+                    </div>
                 </div>
 
                 <div class="task-filters">
-                    <button class="filter-btn active">Tất cả</button>
-                    <button class="filter-btn">Đang thực hiện</button>
-                    <button class="filter-btn">Hoàn thành</button>
-                    <button class="filter-btn">Quá hạn</button>
+                    <button class="filter-btn active" data-filter="all">Tất cả</button>
+                    <button class="filter-btn" data-filter="inprogress">Đang thực hiện</button>
+                    <button class="filter-btn" data-filter="done">Hoàn thành</button>
+                    <button class="filter-btn" data-filter="overdue">Quá hạn</button>
                 </div>
 
                 <div class="task-list" id="taskList">
+                </div>
+            </div>
+
+            <div class="calendar-section" id="calendarSection">
+                <div class="calendar-header">
+                    <button id="prevMonthBtn"><i class="fas fa-chevron-left"></i></button>
+                    <h2 id="currentMonthYear"></h2>
+                    <button id="nextMonthBtn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-weekdays-bar">
+                        <span>Thứ hai</span>
+                        <span>Thứ ba</span>
+                        <span>Thứ tư</span>
+                        <span>Thứ năm</span>
+                        <span>Thứ sáu</span>
+                        <span>Thứ bảy</span>
+                        <span>Chủ nhật</span>
                     </div>
+                    <div id="calendarDates" class="calendar-dates"></div>
+                </div>
+            </div>
+
+            <div class="statistics-section" id="statisticsSection" style="display: none;">
+                <div class="header">
+                    <h1>Thống kê Tác vụ</h1>
+                </div>
+                <div class="chart-container">
+                    <canvas id="taskStatsChart"></canvas>
+                    <div id="taskChartLegend" class="chart-legend"></div> </div>
+                </div>
+        </div>
+    </div>
+
+    <div class="modal" id="calendarTaskDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="calendarDetailModalTitle">Tác vụ trong ngày <span id="calendarDetailDate"></span></h3>
+                <button class="close-button" id="closeCalendarDetailModal">&times;</button>
+            </div>
+            <div class="calendar-detail-task-list" id="calendarDetailTaskList">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeCalendarDetailModalBottom">Đóng</button>
             </div>
         </div>
     </div>
@@ -81,10 +137,17 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="modalTitle">Thêm tác vụ mới</h3>
-                <button class="modal-close" id="closeModal">&times;</button>
+                <button class="close-button" id="closeModal">&times;</button>
             </div>
             <form id="taskForm">
                 <input type="hidden" id="taskId">
+                <div class="form-group">
+                    <label for="taskType">Loại tác vụ</label>
+                    <select id="taskType" class="form-control">
+                        <option value="individual">Cá nhân</option>
+                        <option value="group">Nhóm</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="taskTitle">Tiêu đề</label>
                     <input type="text" id="taskTitle" class="form-control" required>
@@ -92,6 +155,16 @@
                 <div class="form-group">
                     <label for="taskDescription">Mô tả</label>
                     <textarea id="taskDescription" class="form-control"></textarea>
+                </div>
+                <div class="form-group" id="subtasks-container">
+                    <label>Nhiệm vụ con</label>
+                    <div id="subtasksList">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="addSubtaskBtn"><i class="fas fa-plus"></i> Thêm nhiệm vụ con</button>
+                </div>
+                <div class="form-group">
+                    <label for="taskStartDate">Thời gian bắt đầu</label>
+                    <input type="date" id="taskStartDate" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="taskDueDate">Hạn chót</label>
@@ -114,7 +187,7 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn" id="cancelBtn">Hủy</button>
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Hủy</button>
                     <button type="submit" class="btn btn-primary">Lưu</button>
                 </div>
             </form>
@@ -122,6 +195,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/script.js"></script>
 </body>
 </html>
