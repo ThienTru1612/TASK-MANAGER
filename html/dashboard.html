@@ -15,9 +15,21 @@
                     <i class="fas fa-tasks"></i>
                     <span>TaskMaster</span>
                 </div>
-                <div class="user-info">
-                    <img src="../images/avatar.jpg" alt="User  Avatar">
+                <div class="user-info" id="userMenu">
+                    <img src="../images/avatar.jpg" alt="User Avatar">
                     <span>Người dùng</span>
+                    <div class="sidebar-menu" id="userDropdown">
+                        <div class="menu-header">
+                            <i class="fas fa-chevron-up"></i>
+                        </div>
+                        <ul>
+                            <li><i class="fas fa-user"></i> Thông tin cá nhân</li>
+                            <li><i class="fas fa-lock"></i> Đổi mật khẩu trang sinh viên</li>
+                            <li><i class="fas fa-th-large"></i> Đổi mật khẩu Microsoft</li>
+                            <li><i class="fab fa-google"></i> Đổi mật khẩu Google</li>
+                            <li><i class="fas fa-sign-out-alt"></i> Đăng xuất</li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </header>
@@ -60,13 +72,11 @@
                 </div>
 
                 <div class="task-list" id="taskList">
-                    <!-- Task items will be dynamically added here -->
-                </div>
+                    </div>
             </div>
         </div>
     </div>
 
-    <!-- Add/Edit Task Modal -->
     <div class="modal" id="taskModal">
         <div class="modal-content">
             <div class="modal-header">

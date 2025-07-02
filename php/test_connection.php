@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 $host = 'localhost';
 $db   = 'task_manager_db';   // Đảm bảo database này đã được tạo trong phpMyAdmin
 $user = 'root';
-$pass = '123456@Abc';         // Đúng mật khẩu của MySQL
+$pass = '';         // Đúng mật khẩu của MySQL
 $charset = 'utf8mb4';
 
 // Tạo kết nối

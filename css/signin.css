@@ -1,0 +1,536 @@
+:root {
+  --primary-color: #4a6fa5;
+  --secondary-color: #166088;
+  --light-color: #dbe4ee;
+  --dark-color: #2a3d45;
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --danger-color: #f44336;
+
+  /* Màu sắc đặc trưng từ logo "TaskMaster" */
+  --logo-gradient-start: #00bcd4; /* Màu xanh ngọc giống phần icon và chữ 'Task' */
+  --logo-gradient-end: #8e44ad;   /* Màu tím giống chữ 'Master' */
+
+  /* New colors based on the login/signup form for closer matching */
+  --form-background-color: #fff; /* White as in the original */
+  --input-field-background: #f0f0f0; /* Light grey, keeping original for contrast */
+  --input-icon-color: #acacac; /* Light grey, keeping original for contrast */
+  --input-text-color: #333; /* Dark grey, keeping original for contrast */
+  --input-placeholder-color: #aaa; /* Lighter grey, keeping original for contrast */
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+input {
+  font-family: "Poppins", sans-serif;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  background-color: var(--form-background-color);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Message Display Area Styles */
+.message-display {
+    position: absolute;
+    top: 20px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 600;
+    z-index: 1000; /* Ensure it's on top of other elements */
+    text-align: center;
+    width: 80%; /* Adjust width as needed */
+    max-width: 400px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: none; /* Hidden by default, JavaScript will show it */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.message-display.show {
+    opacity: 1;
+}
+
+.message-display.success {
+    background-color: var(--success-color);
+    color: #fff;
+}
+
+.message-display.error {
+    background-color: var(--danger-color);
+    color: #fff;
+}
+
+.message-display.info {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+
+.forms-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.signin-signup {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 75%;
+  width: 50%;
+  transition: 1s 0.7s ease-in-out;
+  display: grid;
+  grid-template-columns: 1fr;
+  z-index: 5;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0rem 5rem;
+  transition: all 0.2s 0.7s;
+  overflow: hidden;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+form.sign-up-form {
+  opacity: 0;
+  z-index: 1;
+}
+
+form.sign-in-form {
+  z-index: 2;
+}
+
+.title {
+  font-size: 2.2rem;
+  color: var(--dark-color); /* Giữ màu chữ tiêu đề bình thường là dark-color */
+  margin-bottom: 10px;
+}
+
+.input-field {
+  max-width: 380px;
+  width: 100%;
+  background-color: var(--input-field-background);
+  margin: 10px 0;
+  height: 55px;
+  border-radius: 55px;
+  display: flex; /* Changed from grid to flex */
+  align-items: center; /* Vertically center content */
+  padding: 0 1.5rem; /* Adjusted padding as there's no icon column */
+  position: relative; /* Added for password toggle icon */
+}
+
+/* Removed .input-field i styles as the icons are removed */
+/*
+.input-field i {
+  text-align: center;
+  line-height: 55px;
+  color: var(--input-icon-color);
+  transition: 0.5s;
+  font-size: 1.1rem;
+}
+*/
+
+.input-field input {
+  background: none;
+  outline: none;
+  border: none;
+  line-height: 1;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--input-text-color);
+  flex-grow: 1; /* Allow input to take available space */
+}
+
+.input-field input::placeholder {
+  color: var(--input-placeholder-color);
+  font-weight: 500;
+}
+
+/* Style for disabled input fields */
+.input-field input:disabled {
+    background-color: #e9e9e9; /* Slightly darker background for disabled */
+    cursor: not-allowed;
+}
+
+/* Styles for password toggle icon */
+.toggle-password {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--input-icon-color);
+    font-size: 1.1rem;
+    z-index: 10; /* Ensure it's above the input */
+}
+
+.btn {
+  width: 150px;
+  /* Dùng gradient của logo cho nút chính */
+  background-image: linear-gradient(to right, var(--logo-gradient-start), var(--logo-gradient-end));
+  border: none;
+  outline: none;
+  height: 49px;
+  border-radius: 49px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: 0.5s;
+  position: relative; /* For loading spinner */
+  overflow: hidden; /* For loading spinner */
+}
+
+.btn:hover {
+  /* Điều chỉnh gradient khi hover nếu muốn, hoặc đơn giản làm đậm hơn */
+  filter: brightness(1.1); /* Làm sáng hơn một chút khi hover */
+}
+
+/* Style for disabled buttons (like resend OTP during cooldown) */
+.btn:disabled {
+    opacity: 0.6; /* Make it slightly transparent */
+    cursor: not-allowed; /* Indicate it's not clickable */
+    filter: none; /* Remove hover effect when disabled */
+}
+
+/* Loading spinner for buttons */
+.btn .spinner {
+    display: none;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn.loading .spinner {
+    display: block;
+}
+
+.btn.loading {
+    color: transparent; /* Hide text when loading */
+    pointer-events: none; /* Prevent clicks when loading */
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Forgot password link */
+.text-link {
+    font-size: 0.9rem;
+    margin-top: -5px; /* Adjust spacing */
+    margin-bottom: 10px;
+}
+
+.text-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.text-link a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+/* Remember me checkbox */
+.remember-me-checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    max-width: 380px;
+    width: 100%;
+}
+
+.remember-me-checkbox input[type="checkbox"] {
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.remember-me-checkbox label {
+    font-size: 0.9rem;
+    color: var(--dark-color);
+    cursor: pointer;
+}
+
+
+.panels-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.container:before {
+  content: "";
+  position: absolute;
+  height: 2000px;
+  width: 2000px;
+  top: -10%;
+  right: 48%;
+  transform: translateY(-50%);
+  /* Áp dụng gradient của logo cho hình tròn lớn */
+  background-image: linear-gradient(-45deg, var(--logo-gradient-start) 0%, var(--logo-gradient-end) 100%);
+  transition: 1.8s ease-in-out;
+  border-radius: 50%;
+  z-index: 6;
+}
+
+.image {
+  width: 100%;
+  transition: transform 1.1s ease-in-out;
+  transition-delay: 0.4s;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-around;
+  text-align: center;
+  z-index: 6;
+}
+
+.left-panel {
+  pointer-events: all;
+  padding: 3rem 17% 2rem 12%;
+}
+
+.right-panel {
+  pointer-events: none;
+  padding: 3rem 12% 2rem 17%;
+}
+
+.panel .content {
+  color: #fff; /* Giữ màu trắng cho nội dung trên panel màu */
+  transition: transform 0.9s ease-in-out;
+  transition-delay: 0.6s;
+}
+
+.panel h3 {
+  font-weight: 600;
+  line-height: 1;
+  font-size: 1.5rem;
+}
+
+.panel p {
+  font-size: 0.95rem;
+  padding: 0.7rem 0;
+}
+
+.btn.transparent {
+  margin: 0;
+  background: none;
+  border: 2px solid #fff; /* Giữ màu trắng cho border của nút trong suốt */
+  width: 130px;
+  height: 41px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.right-panel .image,
+.right-panel .content {
+  transform: translateX(800px);
+}
+
+/* ANIMATION */
+
+.container.sign-up-mode:before {
+  transform: translate(100%, -50%);
+  right: 52%;
+}
+
+.container.sign-up-mode .left-panel .image,
+.container.sign-up-mode .left-panel .content {
+  transform: translateX(-800px);
+}
+
+.container.sign-up-mode .signin-signup {
+  left: 25%;
+}
+
+.container.sign-up-mode form.sign-up-form {
+  opacity: 1;
+  z-index: 2;
+}
+
+.container.sign-up-mode form.sign-in-form {
+  opacity: 0;
+  z-index: 1;
+}
+
+.container.sign-up-mode .right-panel .image,
+.container.sign-up-mode .right-panel .content {
+  transform: translateX(0%);
+}
+
+.container.sign-up-mode .left-panel {
+  pointer-events: none;
+}
+
+.container.sign-up-mode .right-panel {
+  pointer-events: all;
+}
+
+@media (max-width: 870px) {
+  .container {
+    min-height: 800px;
+    height: 100vh;
+  }
+  .signin-signup {
+    width: 100%;
+    top: 95%;
+    transform: translate(-50%, -100%);
+    transition: 1s 0.8s ease-in-out;
+  }
+
+  .signin-signup,
+  .container.sign-up-mode .signin-signup {
+    left: 50%;
+  }
+
+  .panels-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
+  }
+
+  .panel {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2.5rem 8%;
+    grid-column: 1 / 2;
+  }
+
+  .right-panel {
+    grid-row: 3 / 4;
+  }
+
+  .left-panel {
+    grid-row: 1 / 2;
+  }
+
+  .image {
+    width: 200px;
+    transition: transform 0.9s ease-in-out;
+    transition-delay: 0.6s;
+  }
+
+  .panel .content {
+    padding-right: 15%;
+    transition: transform 0.9s ease-in-out;
+    transition-delay: 0.8s;
+  }
+
+  .panel h3 {
+    font-size: 1.2rem;
+  }
+
+  .panel p {
+    font-size: 0.7rem;
+    padding: 0.5rem 0;
+  }
+
+  .btn.transparent {
+    width: 110px;
+    height: 35px;
+    font-size: 0.7rem;
+  }
+
+  .container:before {
+    width: 1500px;
+    height: 1500px;
+    transform: translateX(-50%);
+    left: 30%;
+    bottom: 68%;
+    right: initial;
+    top: initial;
+    transition: 2s ease-in-out;
+  }
+
+  .container.sign-up-mode:before {
+    transform: translate(-50%, 100%);
+    bottom: 32%;
+    right: initial;
+  }
+
+  .container.sign-up-mode .left-panel .image,
+  .container.sign-up-mode .left-panel .content {
+    transform: translateY(-300px);
+  }
+
+  .container.sign-up-mode .right-panel .image,
+  .container.sign-up-mode .right-panel .content {
+    transform: translateY(0px);
+  }
+
+  .right-panel .image,
+  .right-panel .content {
+    transform: translateY(300px);
+  }
+
+  .container.sign-up-mode .signin-signup {
+    top: 5%;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (max-width: 570px) {
+  form {
+    padding: 0 1.5rem;
+  }
+
+  .image {
+    display: none;
+  }
+  .panel .content {
+    padding: 0.5rem 1rem;
+  }
+  .container {
+    padding: 1.5rem;
+  }
+
+  .container:before {
+    bottom: 72%;
+    left: 50%;
+  }
+
+  .container.sign-up-mode:before {
+    bottom: 28%;
+    left: 50%;
+  }
+}

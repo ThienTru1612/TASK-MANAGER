@@ -2,7 +2,7 @@
 $host = 'localhost';
 $db   = 'task_manager_db';
 $user = 'root';
-$pass = '123456@Abc'; // điền mật khẩu nếu có
+$pass = ''; // điền mật khẩu nếu có
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
