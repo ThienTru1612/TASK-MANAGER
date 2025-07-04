@@ -456,8 +456,10 @@ $(document).ready(function() {
 
             // Apply main status/type filter
             const overallStatus = getTaskOverallStatus(task);
+            console.log(`Task: ${task.title}, Original Status: ${task.status}, Overall Status: ${overallStatus}`); //mới thêm vào để ý không dùng thì xóa
             switch (currentMainFilter) {
                 case 'all': return true;
+                case 'todo': return overallStatus === 'todo';
                 case 'inprogress': return overallStatus === 'inprogress';
                 case 'done': return overallStatus === 'done';
                 case 'overdue': return overallStatus === 'overdue';
