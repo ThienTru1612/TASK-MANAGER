@@ -30,6 +30,26 @@ $(document).ready(function() {
     // Filter Buttons
     const filterButtons = $('.filter-btn');
 
+    // Task Filters
+    const taskFilterButtons = $('#taskSection .filter-btn');
+    let currentTaskFilter = 'all'; // Filter state for Task Section
+
+    // Group Filters
+    const groupFilterButtons = $('#groupSection .filter-btn');
+    let currentGroupFilter = 'all'; // Filter state for Group Section
+
+    // Job Filters
+    const jobFilterButtons = $('#jobSection .filter-btn');
+    let currentJobFilter = 'all'; // Filter state for Job Section
+
+    // Study Filters
+    const studyFilterButtons = $('#studySection .filter-btn');
+    let currentStudyFilter = 'all'; // Filter state for Study Section
+
+    // Personal Filters
+    const personalFilterButtons = $('#personalSection .filter-btn');
+    let currentPersonalFilter = 'all'; // Filter state for Personal Section
+
     // Group Task Integration Elements (NEW)
     const groupSelectContainer = $('#groupSelectContainer');
     const taskGroupInput = $('#taskGroup');
@@ -457,7 +477,7 @@ $(document).ready(function() {
             // Apply main status/type filter
             const overallStatus = getTaskOverallStatus(task);
             console.log(`Task: ${task.title}, Original Status: ${task.status}, Overall Status: ${overallStatus}`); //mới thêm vào để ý không dùng thì xóa
-            switch (currentMainFilter) {
+            switch (currentTaskFilter) {
                 case 'all': return true;
                 case 'todo': return overallStatus === 'todo';
                 case 'inprogress': return overallStatus === 'inprogress';
@@ -877,14 +897,35 @@ $(document).ready(function() {
     // Render Groups List
     function renderGroups() {
         groupList.empty();
-        if (groups.length === 0) {
+
+        // Lọc nhóm dựa trên currentGroupFilter
+        const filteredGroups = groups.filter(group => {
+            //const overallStatus = getTaskOverallStatus(group); // Giả định rằng group có thuộc tính status
+            const groupStatus = group.status; // Lấy trạng thái trực tiếp từ đối tượng nhóm
+            switch (currentGroupFilter) {
+                case 'all': return true;
+                case 'todo': return groupStatus === 'todo';
+                case 'inprogress': return groupStatus === 'inprogress';
+                case 'done': return groupStatus === 'done';
+                case 'overdue':
+                    // Để xác định nhóm quá hạn, cần so sánh group.dueDate với ngày hiện tại
+                    const now = new Date();
+                    now.setHours(0, 0, 0, 0);
+                    const groupDueDateObj = new Date(group.dueDate);
+                    groupDueDateObj.setHours(0, 0, 0, 0);
+                    return groupStatus !== 'done' && groupDueDateObj < now;
+                default: return true;
+            }
+        });
+
+        if (filteredGroups.length === 0) {
             groupList.append('<p class="no-groups-message" style="text-align: center; color: #777;">Chưa có nhóm nào.</p>');
             return;
         } else {
             $('.no-groups-message').remove();
         }
 
-        groups.forEach(group => {
+        filteredGroups.forEach(group => {
             // BỔ SUNG: Lọc các tác vụ thuộc nhóm này
             const tasksInGroup = tasks.filter(task => task.groupId === group.id);
             let tasksInGroupHtml = '';
@@ -948,16 +989,33 @@ $(document).ready(function() {
     // Render Job List
     function renderJobs() {
         jobList.empty();
-        if (jobs.length === 0) {
+
+        /*const filteredJobs = jobs.filter(job => {
+            // Giả định job object có thuộc tính 'status' và 'dueDate' để dùng getTaskOverallStatus
+            // Nếu không, bạn cần một hàm getJobOverallStatus riêng hoặc chỉ lọc theo job.status
+            const overallStatus = getTaskOverallStatus(job); // Tái sử dụng nếu job có dueDate
+            switch (currentJobFilter) { // Sử dụng currentJobFilter
+                case 'all': return true;
+                case 'todo': return overallStatus === 'todo';
+                case 'inprogress': return overallStatus === 'inprogress';
+                case 'done': return overallStatus === 'done';
+                case 'overdue': return overallStatus === 'overdue';
+                default: return true;
+            }
+        });*/
+
+        const jobsToRender = jobs;
+
+        if (jobsToRender.length === 0) {
             jobList.append('<p class="no-jobs-message" style="text-align: center; color: #777;">Chưa có công việc nào được thêm.</p>');
             return;
         } else {
             $('.no-jobs-message').remove();
         }
 
-        jobs.forEach(job => {
+        jobsToRender.forEach(job => {
             const jobItemHtml = `
-                <div class="job-item" data-id="${job.id}">
+                <div class="job-item" data-id="${job.id}" data-status="${getTaskOverallStatus(job)}">
                     <h3>${job.title}</h3>
                     <p>${job.description}</p>
                     <div class="job-meta">
@@ -981,14 +1039,26 @@ $(document).ready(function() {
     function renderStudyTasks() {
         studyTaskList.empty(); // Xóa danh sách hiện tại
 
-        const studyTasks = tasks.filter(task => task.category === 'study'); // Lọc tác vụ học tập
+        const allStudyTasks = tasks.filter(task => task.category === 'study'); // Lọc tác vụ học tập
 
-        if (studyTasks.length === 0) {
+        const filteredStudyTasks = allStudyTasks.filter(task => {
+            const overallStatus = getTaskOverallStatus(task);
+            switch (currentStudyFilter) { // Sử dụng currentStudyFilter
+                case 'all': return true;
+                case 'todo': return overallStatus === 'todo';
+                case 'inprogress': return overallStatus === 'inprogress';
+                case 'done': return overallStatus === 'done';
+                case 'overdue': return overallStatus === 'overdue';
+                default: return true;
+            }
+        });
+
+        if (filteredStudyTasks.length === 0) {
             studyTaskList.append('<p class="no-tasks-message" style="text-align: center; color: #777;">Không có tác vụ học tập nào được tìm thấy.</p>');
             return;
         }
 
-        studyTasks.forEach(task => {
+        filteredStudyTasks.forEach(task => {
             const priorityClass = getPriorityClass(task.priority);
             const priorityText = getPriorityText(task.priority);
             const overallStatus = getTaskOverallStatus(task);
@@ -1002,7 +1072,7 @@ $(document).ready(function() {
             }
 
             const taskItemHtml = `
-                <div class="task-item" data-id="${task.id}" data-category="study">
+                <div class="study-task-item" data-id="${task.id}" data-category="study">
                     <div class="task-item-header">
                         <span class="task-title">${task.title}</span>
                         <span class="task-priority ${priorityClass}">${priorityText}</span>
@@ -1025,14 +1095,26 @@ $(document).ready(function() {
     // Render Personal Tasks List
     function renderPersonalTasks() {
         personalTaskList.empty();
-        const personalTasks = tasks.filter(task => task.category === 'personal');
+        const allPersonalTasks = tasks.filter(task => task.category === 'personal');
 
-        if (personalTasks.length === 0) {
+        const filteredPersonalTasks = allPersonalTasks.filter(task => {
+            const overallStatus = getTaskOverallStatus(task);
+            switch (currentPersonalFilter) {
+                case 'all': return true;
+                case 'todo': return overallStatus === 'todo';
+                case 'inprogress': return overallStatus === 'inprogress';
+                case 'done': return overallStatus === 'done';
+                case 'overdue': return overallStatus === 'overdue';
+                default: return true;
+            }
+        });
+
+        if (filteredPersonalTasks.length === 0) {
             personalTaskList.append('<p class="no-tasks-message" style="text-align: center; color: #777;">Không có tác vụ cá nhân nào được tìm thấy.</p>');
             return;
         }
 
-        personalTasks.forEach(task => {
+        filteredPersonalTasks.forEach(task => {
             const priorityClass = getPriorityClass(task.priority);
             const priorityText = getPriorityText(task.priority);
             const overallStatus = getTaskOverallStatus(task);
@@ -1448,12 +1530,44 @@ $(document).ready(function() {
         renderTasks(); // Re-render with search filter
     });
 
-    // Filter tasks by status (main filters)
-    filterButtons.on('click', function() {
-        filterButtons.removeClass('active');
+    // Filter tasks by status (Task Section)
+    taskFilterButtons.on('click', function() {
+        taskFilterButtons.removeClass('active');
         $(this).addClass('active');
-        currentMainFilter = $(this).data('filter');
+        currentTaskFilter = $(this).data('filter');
         renderTasks();
+    });
+
+    // Filter groups by status (Group Section)
+    groupFilterButtons.on('click', function() {
+        groupFilterButtons.removeClass('active');
+        $(this).addClass('active');
+        currentGroupFilter = $(this).data('filter');
+        renderGroups();
+    });
+
+    // Filter jobs by status (Job Section)
+    /*jobFilterButtons.on('click', function() {
+        jobFilterButtons.removeClass('active');
+        $(this).addClass('active');
+        currentJobFilter = $(this).data('filter');
+        renderJobs();
+    });*/
+
+    // Filter study tasks by status (Study Section)
+    studyFilterButtons.on('click', function() {
+        studyFilterButtons.removeClass('active');
+        $(this).addClass('active');
+        currentStudyFilter = $(this).data('filter');
+        renderStudyTasks();
+    });
+
+    // Filter personal tasks by status (Personal Section)
+    personalFilterButtons.on('click', function() {
+        personalFilterButtons.removeClass('active');
+        $(this).addClass('active');
+        currentPersonalFilter = $(this).data('filter');
+        renderPersonalTasks();
     });
 
     // Dark Mode Toggle Logic
@@ -1874,53 +1988,52 @@ $(document).ready(function() {
         personalSection.hide();
 
         const targetViewId = $(this).attr('id');
-        const typeFilter = $(this).data('type-filter');
-        const categoryFilter = $(this).data('category-filter');
+        const categoryFilter = $(this).data('category-filter'); // Giữ nguyên categoryFilter
+
+        // Hàm tiện ích để đặt lại bộ lọc và render
+        function resetAndRender(filterButtons, currentFilterVar, renderFunction) {
+            filterButtons.removeClass('active');
+            filterButtons.filter('[data-filter="all"]').addClass('active');
+            // Cập nhật biến trạng thái bộ lọc
+            if (currentFilterVar === currentTaskFilter) currentTaskFilter = 'all';
+            if (currentFilterVar === currentGroupFilter) currentGroupFilter = 'all';
+            if (currentFilterVar === currentJobFilter) currentJobFilter = 'all';
+            if (currentFilterVar === currentStudyFilter) currentStudyFilter = 'all';
+            if (currentFilterVar === currentPersonalFilter) currentPersonalFilter = 'all';
+            renderFunction();
+        }
 
         if (targetViewId === 'tasksViewBtn') {
            tasksSection.show();
-            currentFilterBy = 'none';
+            // Đặt lại bộ lọc tác vụ chính
+            currentFilterBy = 'none'; // Đặt lại các bộ lọc phụ
             currentFilterValue = 'all';
-            currentMainFilter = 'all';
-            filterButtons.removeClass('active');
-            $('[data-filter="all"]').addClass('active');
-            renderTasks();
-        } else if (typeFilter) {
-           tasksSection.show();
-            currentFilterBy = 'type';
-            currentFilterValue = typeFilter;
-            currentMainFilter = 'all';
-            filterButtons.removeClass('active');
-            $('[data-filter="all"]').addClass('active');
-            renderTasks();
-        } else if (categoryFilter) {
-            if (categoryFilter === 'group') {
-                groupSection.show();
-                renderGroups();
-            } else if (categoryFilter === 'work') {
-                jobSection.show();
-                renderJobs();
-            } else if (categoryFilter === 'study') {
-                studySection.show();
-                renderStudyTasks();
-            } else if (categoryFilter === 'personal') {
-                personalSection.show();
-                renderPersonalTasks();
-            } else { // If 'all' or other categories without a dedicated section
-                tasksSection.show();
-                currentFilterBy = 'category';
-                currentFilterValue = categoryFilter;
-                currentMainFilter = 'all';
-                filterButtons.removeClass('active');
-                $('[data-filter="all"]').addClass('active');
-                renderTasks();
-            }
+            resetAndRender(taskFilterButtons, currentTaskFilter, renderTasks);
         } else if (targetViewId === 'calendarViewBtn') {
             calendarSection.show();
             renderCalendar();
         } else if (targetViewId === 'statisticsViewBtn') {
             statisticsSection.show();
            renderTaskStatsChart();
+        } else if (categoryFilter) { // Xử lý các category link
+            if (categoryFilter === 'group') {
+                groupSection.show();
+                resetAndRender(groupFilterButtons, currentGroupFilter, renderGroups);
+            } else if (categoryFilter === 'work') {
+                jobSection.show();
+                resetAndRender(jobFilterButtons, currentJobFilter, renderJobs);
+            } else if (categoryFilter === 'study') {
+                studySection.show();
+                resetAndRender(studyFilterButtons, currentStudyFilter, renderStudyTasks);
+            } else if (categoryFilter === 'personal') {
+                personalSection.show();
+                resetAndRender(personalFilterButtons, currentPersonalFilter, renderPersonalTasks);
+            } else { // Nếu là 'all' hoặc các category khác không có section riêng
+                tasksSection.show();
+                currentFilterBy = 'category';
+                currentFilterValue = categoryFilter;
+                resetAndRender(taskFilterButtons, currentTaskFilter, renderTasks);
+            }
         }
     });
 
