@@ -13,68 +13,205 @@
             <nav>
                 <div class="logo">
                     <i class="fas fa-tasks"></i>
-                    <span>TaskMaster</span>
+                    <span>Task Manager</span>
                 </div>
-                <div class="user-info">
-                    <img src="../images/avatar.jpg" alt="User  Avatar">
-                    <span>Người dùng</span>
+                <div class="user-interaction">
+                    <label class="switch">
+                        <input class="switch__input" type="checkbox" role="switch" id="darkModeToggle">
+                        <svg class="switch__letters" viewBox="0 0 24 24" width="24px" height="24px" aria-hidden="true">
+                            <g stroke="currentcolor" stroke-linecap="round" stroke-width="4" transform="translate(0,4)">
+                                <g class="switch__letter">
+                                    <polyline class="switch__letter-stroke" points="2 2,2 14" />
+                                    <polyline class="switch__letter-stroke" points="2 2,16 2" stroke-dasharray="14 16" stroke-dashoffset="8" transform="rotate(0,2,2)" />
+                                    <polyline class="switch__letter-stroke" points="2 8,6 8" stroke-dasharray="4 6" />
+                                </g>
+                                <g class="switch__letter" transform="translate(14,0)">
+                                    <polyline class="switch__letter-stroke" points="2 2,2 14" />
+                                    <polyline class="switch__letter-stroke" points="2 2,8 2" stroke-dasharray="6 8" />
+                                    <polyline class="switch__letter-stroke" points="2 8,6 8" stroke-dasharray="4 6" />
+                                </g>
+                            </g>
+                        </svg>
+                        <span class="switch__text"></span>
+                    </label>
+
+                    <div class="icon-notification-message notification-container"> <!-- Thêm class notification-container để dễ dàng định vị trong CSS/JS -->
+                        <i class="fas fa-bell notification-icon" id="notificationBell"></i> <!-- Thêm ID để dễ dàng bắt sự kiện click -->
+                        <span class="badge notification-badge">5</span> <!-- Giữ lại badge nếu bạn muốn hiển thị số lượng thông báo chưa đọc -->
+
+                        <div class="notifications-dropdown" id="notificationsDropdown">
+                            <div class="notifications-header">
+                                <h4>Thông báo</h4>
+                                <button id="markAllAsReadBtn" class="btn btn-sm btn-primary">Đọc tất cả</button>
+                            </div>
+                            <ul id="notificationList">
+                                <li class="no-notifications">Không có thông báo mới.</li>
+                            </ul>
+                            <div class="notifications-footer">
+                                <a href="#" id="viewAllNotifications">Xem tất cả</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="icon-notification-message">
+                        <i class="fas fa-envelope message-icon"></i>
+                        <span class="badge message-badge">2</span>
+                    </div>
+
+                    <div class="user-info">
+                        <img src="../images/avatar.jpg" alt="User  Avatar">
+                        <span></span>
+                    </div>
                 </div>
             </nav>
         </header>
 
         <div class="main-content">
             <div class="sidebar">
-                <div class="sidebar-menu">
-                    <h3>Menu</h3>
-                    <ul>
-                        <li><a href="#" class="active"><i class="fas fa-home"></i> Trang chủ</a></li>
-                        <li><a href="#"><i class="fas fa-inbox"></i> Tất cả tác vụ</a></li>
-                        <li><a href="#"><i class="fas fa-calendar-alt"></i> Lịch</a></li>
-                        <li><a href="#"><i class="fas fa-chart-bar"></i> Thống kê</a></li>
-                        <li><a href="#"><i class="fas fa-users"></i> Nhóm</a></li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-menu">
-                    <h3>Danh mục</h3>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-briefcase"></i> Công việc</a></li>
-                        <li><a href="#"><i class="fas fa-book"></i> Học tập</a></li>
-                        <li><a href="#"><i class="fas fa-heart"></i> Cá nhân</a></li>
-                    </ul>
-                </div>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" id="tasksViewBtn" data-category-filter="all"><i class="fas fa-home"></i> <span>Tác vụ</span></a></li>
+                    <li><a href="#" id="calendarViewBtn"><i class="fas fa-calendar-alt"></i> <span>Lịch</span></a></li>
+                    <li><a href="#" id="statisticsViewBtn"><i class="fas fa-chart-bar"></i> <span>Thống kê</span></a></li>
+                    <li><a href="#" id="groupCategoryLink" data-category-filter="group"><i class="fas fa-users"></i> <span>Nhóm</span></a></li>
+                    <li><a href="#" id="workCategoryLink" data-category-filter="work"><i class="fas fa-briefcase"></i> <span>Công việc</span></a></li>
+                    <li><a href="#" id="studyCategoryLink" data-category-filter="study"><i class="fas fa-book"></i> <span>Học tập</span></a></li>
+                    <li><a href="#" id="personalCategoryLink" data-category-filter="personal"><i class="fas fa-heart"></i> <span>Cá nhân</span></a></li>
+                </ul>
             </div>
 
-            <div class="task-section">
-                <div class="task-header">
-                    <input type="text" id="searchInput" placeholder="Tìm kiếm tác vụ..." class="form-control" style="max-width: 250px;">
-                    <h2><i class="fas fa-list-ul"></i> Danh sách tác vụ</h2>
-                    <button id="addTaskBtn" class="btn btn-primary"><i class="fas fa-plus"></i> Thêm tác vụ</button>
+            <div class="task-section" id="taskSection">
+                <div class="header">
+                    <h1>Danh sách tác vụ</h1>
+                    <div class="header-right">
+                        <div class="search-icon-container">
+                            <i class="fas fa-search search-toggle-icon"></i>
+                        </div>
+                        <div class="search-input-container">
+                            <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm tác vụ...">
+                        </div>
+                        <button class="btn btn-primary" id="addTaskBtn"><i class="fas fa-plus"></i> Thêm tác vụ</button>
+                    </div>
                 </div>
 
                 <div class="task-filters">
-                    <button class="filter-btn active">Tất cả</button>
-                    <button class="filter-btn">Đang thực hiện</button>
-                    <button class="filter-btn">Hoàn thành</button>
-                    <button class="filter-btn">Quá hạn</button>
+                    <button class="filter-btn active" data-filter="all">Tất cả</button>
+                    <button class="filter-btn" data-filter="inprogress">Đang thực hiện</button>
+                    <button class="filter-btn" data-filter="done">Hoàn thành</button>
+                    <button class="filter-btn" data-filter="overdue">Quá hạn</button>
                 </div>
 
                 <div class="task-list" id="taskList">
-                    <!-- Task items will be dynamically added here -->
                 </div>
+            </div>
+
+            <div class="calendar-section" id="calendarSection">
+                <div class="calendar-header">
+                    <button id="prevMonthBtn"><i class="fas fa-chevron-left"></i></button>
+                    <h2 id="currentMonthYear"></h2>
+                    <button id="nextMonthBtn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-weekdays-bar">
+                        <span>Thứ hai</span>
+                        <span>Thứ ba</span>
+                        <span>Thứ tư</span>
+                        <span>Thứ năm</span>
+                        <span>Thứ sáu</span>
+                        <span>Thứ bảy</span>
+                        <span>Chủ nhật</span>
+                    </div>
+                    <div id="calendarDates" class="calendar-dates"></div>
+                </div>
+            </div>
+
+            <div class="statistics-section" id="statisticsSection" style="display: none;">
+                <div class="header">
+                    <h1>Thống kê Tác vụ</h1>
+                </div>
+                <div class="chart-container">
+                    <canvas id="taskStatsChart"></canvas>
+                    <div id="taskChartLegend" class="chart-legend"></div>
+                </div>
+            </div>
+
+            <div class="group-section" id="groupSection" style="display: none;">
+                <div class="header">
+                    <h1>Quản lý Nhóm</h1>
+                    <button class="btn btn-primary" id="createGroupBtn"><i class="fas fa-plus"></i> Tạo nhóm mới</button>
+                </div>
+                <div class="teams-overview" id="groupList">
+                    <!-- Group cards will be rendered here -->
+                </div>
+            </div>
+
+            <div class="job-section" id="jobSection" style="display: none;">
+                <div class="header">
+                    <h1>Công việc</h1>
+                    <button class="btn btn-primary" id="addJobBtn">
+                        <i class="fas fa-plus"></i> Thêm công việc mới
+                    </button>
+                </div>
+                <div class="job-list-container">
+                    <div id="jobList" class="job-list">
+                        <!-- Job items will be rendered here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="study-section" id="studySection">
+                <div class="header">
+                    <h1>Quản lý Học Tập</h1>
+                    <button class="btn btn-primary" id="createStudyTaskBtn"><i class="fas fa-plus"></i> Tạo tác vụ học tập mới</button>
+                </div>
+
+                <div class="task-list" id="studyTaskList">
+                    <!-- Các tác vụ học tập sẽ được render ở đây -->
+                </div>
+            </div>
+
+            <!-- Personal Tasks Section -->
+            <div class="personal-section" id="personalSection" style="display: none;">
+                <div class="header">
+                    <h1>Quản lý Tác vụ Cá nhân</h1>
+                    <button class="btn btn-primary" id="createPersonalTaskBtn"><i class="fas fa-plus"></i> Thêm tác vụ cá nhân mới</button>
+                </div>
+
+                <div class="task-list" id="personalTaskList">
+                    <!-- Các tác vụ cá nhân sẽ được render ở đây -->
+                </div>
+            </div>
+        </div> <!-- Close main-content div -->
+    </div>
+
+    <div class="modal" id="calendarTaskDetailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="calendarDetailModalTitle">Tác vụ trong ngày <span id="calendarDetailDate"></span></h3>
+                <button class="close-button" id="closeCalendarDetailModal">&times;</button>
+            </div>
+            <div class="calendar-detail-task-list" id="calendarDetailTaskList">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeCalendarDetailModalBottom">Đóng</button>
             </div>
         </div>
     </div>
 
-    <!-- Add/Edit Task Modal -->
     <div class="modal" id="taskModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="modalTitle">Thêm tác vụ mới</h3>
-                <button class="modal-close" id="closeModal">&times;</button>
+                <button class="close-button" id="closeModal">&times;</button>
             </div>
             <form id="taskForm">
                 <input type="hidden" id="taskId">
+                <div class="form-group" id="groupSelectContainer">
+                    <label for="taskType">Loại tác vụ</label>
+                    <select id="taskType" class="form-control">
+                        <option value="individual">Cá nhân</option>
+                        <option value="group">Nhóm</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="taskTitle">Tiêu đề</label>
                     <input type="text" id="taskTitle" class="form-control" required>
@@ -82,6 +219,16 @@
                 <div class="form-group">
                     <label for="taskDescription">Mô tả</label>
                     <textarea id="taskDescription" class="form-control"></textarea>
+                </div>
+                <div class="form-group" id="subtasks-container">
+                    <label>Nhiệm vụ con</label>
+                    <div id="subtasksList">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="addSubtaskBtn"><i class="fas fa-plus"></i> Thêm nhiệm vụ con</button>
+                </div>
+                <div class="form-group">
+                    <label for="taskStartDate">Thời gian bắt đầu</label>
+                    <input type="date" id="taskStartDate" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="taskDueDate">Hạn chót</label>
@@ -104,7 +251,206 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn" id="cancelBtn">Hủy</button>
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="groupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="groupModalTitle">Tạo nhóm mới</h3>
+                <button class="close-button" id="closeGroupModal">&times;</button>
+            </div>
+            <form id="groupForm">
+                <input type="hidden" id="groupId">
+                <div class="form-group">
+                    <label for="groupName">Tên nhóm</label>
+                    <input type="text" id="groupName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="groupDescription">Mô tả</label>
+                    <textarea id="groupDescription" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="groupMembers">Thành viên (cách nhau bởi dấu phẩy)</label>
+                    <input type="text" id="groupMembers" class="form-control" placeholder="VD: An, Bình, Cường">
+                </div>
+                <div class="form-group">
+                    <label for="groupStartDate">Ngày bắt đầu</label>
+                    <input type="date" id="groupStartDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="groupDueDate">Ngày hết hạn</label>
+                    <input type="date" id="groupDueDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="groupPriority">Độ ưu tiên</label>
+                    <select id="groupPriority" class="form-control" required>
+                    <option value="high">Cao</option>
+                    <option value="medium">Trung bình</option>
+                    <option value="low">Thấp</option>
+                </select>
+                </div>
+                <div class="form-group">
+                    <label for="groupStatus">Trạng thái</label>
+                    <select id="groupStatus" class="form-control" required>
+                        <option value="todo">Chưa bắt đầu</option>
+                        <option value="inprogress">Đang thực hiện</option>
+                        <option value="done">Hoàn thành</option>
+                        <option value="overdue">Quá hạn</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelGroupBtn">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="jobModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="jobModalTitle">Thêm công việc mới</h3>
+                <button class="close-button" id="closeJobModal">&times;</button>
+            </div>
+            <form id="jobForm">
+                <input type="hidden" id="jobId">
+                <div class="form-group">
+                    <label for="jobTitle">Tiêu đề công việc</label>
+                    <input type="text" id="jobTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="jobDescription">Mô tả công việc</label>
+                    <textarea id="jobDescription" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="jobCompany">Công ty</label>
+                    <input type="text" id="jobCompany" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="jobLocation">Địa điểm</label>
+                    <input type="text" id="jobLocation" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="jobSalary">Mức lương (ước tính)</label>
+                    <input type="text" id="jobSalary" class="form-control" placeholder="VD: 1000 - 1500 USD/tháng">
+                </div>
+                <div class="form-group">
+                    <label for="jobStatus">Trạng thái</label>
+                    <select id="jobStatus" class="form-control">
+                        <option value="Đang tìm kiếm">Đang tìm kiếm</option>
+                        <option value="Đã nộp đơn">Đã nộp đơn</option>
+                        <option value="Đã phỏng vấn">Đã phỏng vấn</option>
+                        <option value="Đã nhận được offer">Đã nhận được offer</option>
+                        <option value="Đã từ chối">Đã từ chối</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="jobApplicationLink">Link ứng tuyển</label>
+                    <input type="url" id="jobApplicationLink" class="form-control" placeholder="URL">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelJobBtn">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="studyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="studyModalTitle">Thêm tác vụ học tập mới</h3>
+                <button class="close-button" id="closeStudyModal">&times;</button>
+            </div>
+            <form id="studyForm">
+                <input type="hidden" id="studyId">
+                <div class="form-group">
+                    <label for="studyTitle">Tiêu đề tác vụ học tập</label>
+                    <input type="text" id="studyTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="studyDescription">Mô tả tác vụ học tập</label>
+                    <textarea id="studyDescription" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="studyStartDate">Ngày bắt đầu</label>
+                    <input type="date" id="studyStartDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="studyDueDate">Hạn chót</label>
+                    <input type="date" id="studyDueDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="studyPriority">Độ ưu tiên</label>
+                    <select id="studyPriority" class="form-control">
+                        <option value="low">Thấp</option>
+                        <option value="medium">Trung bình</option>
+                        <option value="high">Cao</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="studyStatus">Trạng thái</label>
+                    <select id="studyStatus" class="form-control">
+                        <option value="todo">Chưa bắt đầu</option>
+                        <option value="inprogress">Đang thực hiện</option>
+                        <option value="done">Hoàn thành</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelStudyBtn">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="personalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="personalModalTitle">Thêm tác vụ cá nhân mới</h3>
+                <button class="close-button" id="closePersonalModal">&times;</button>
+            </div>
+            <form id="personalForm">
+                <input type="hidden" id="personalId">
+                <div class="form-group">
+                    <label for="personalTitle">Tiêu đề tác vụ cá nhân</label>
+                    <input type="text" id="personalTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="personalDescription">Mô tả tác vụ cá nhân</label>
+                    <textarea id="personalDescription" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="personalStartDate">Ngày bắt đầu</label>
+                    <input type="date" id="personalStartDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="personalDueDate">Hạn chót</label>
+                    <input type="date" id="personalDueDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="personalPriority">Độ ưu tiên</label>
+                    <select id="personalPriority" class="form-control">
+                        <option value="low">Thấp</option>
+                        <option value="medium">Trung bình</option>
+                        <option value="high">Cao</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="personalStatus">Trạng thái</label>
+                    <select id="personalStatus" class="form-control">
+                        <option value="todo">Chưa bắt đầu</option>
+                        <option value="inprogress">Đang thực hiện</option>
+                        <option value="done">Hoàn thành</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelPersonalBtn">Hủy</button>
                     <button type="submit" class="btn btn-primary">Lưu</button>
                 </div>
             </form>
@@ -112,6 +458,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/script.js"></script>
 </body>
 </html>
