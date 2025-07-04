@@ -140,6 +140,15 @@
                     <h1>Quản lý Nhóm</h1>
                     <button class="btn btn-primary" id="createGroupBtn"><i class="fas fa-plus"></i> Tạo nhóm mới</button>
                 </div>
+
+                <div class="task-filters">
+                    <button class="filter-btn active" data-filter="all">Tất cả</button>
+                    <button class="filter-btn" data-filter="todo">Chưa bắt đầu</button>
+                    <button class="filter-btn" data-filter="inprogress">Đang thực hiện</button>
+                    <button class="filter-btn" data-filter="done">Hoàn thành</button>
+                    <button class="filter-btn" data-filter="overdue">Quá hạn</button>
+                </div>
+
                 <div class="teams-overview" id="groupList">
                     <!-- Group cards will be rendered here -->
                 </div>
@@ -152,6 +161,7 @@
                         <i class="fas fa-plus"></i> Thêm công việc mới
                     </button>
                 </div>
+
                 <div class="job-list-container">
                     <div id="jobList" class="job-list">
                         <!-- Job items will be rendered here -->
@@ -165,6 +175,14 @@
                     <button class="btn btn-primary" id="createStudyTaskBtn"><i class="fas fa-plus"></i> Tạo tác vụ học tập mới</button>
                 </div>
 
+                <div class="task-filters">
+                    <button class="filter-btn active" data-filter="all">Tất cả</button>
+                    <button class="filter-btn" data-filter="todo">Chưa bắt đầu</button>
+                    <button class="filter-btn" data-filter="inprogress">Đang thực hiện</button>
+                    <button class="filter-btn" data-filter="done">Hoàn thành</button>
+                    <button class="filter-btn" data-filter="overdue">Quá hạn</button>
+                </div>
+
                 <div class="task-list" id="studyTaskList">
                     <!-- Các tác vụ học tập sẽ được render ở đây -->
                 </div>
@@ -175,6 +193,14 @@
                 <div class="header">
                     <h1>Quản lý Tác vụ Cá nhân</h1>
                     <button class="btn btn-primary" id="createPersonalTaskBtn"><i class="fas fa-plus"></i> Thêm tác vụ cá nhân mới</button>
+                </div>
+
+                <div class="task-filters">
+                    <button class="filter-btn active" data-filter="all">Tất cả</button>
+                    <button class="filter-btn" data-filter="todo">Chưa bắt đầu</button>
+                    <button class="filter-btn" data-filter="inprogress">Đang thực hiện</button>
+                    <button class="filter-btn" data-filter="done">Hoàn thành</button>
+                    <button class="filter-btn" data-filter="overdue">Quá hạn</button>
                 </div>
 
                 <div class="task-list" id="personalTaskList">
@@ -401,6 +427,7 @@
                         <option value="todo">Chưa bắt đầu</option>
                         <option value="inprogress">Đang thực hiện</option>
                         <option value="done">Hoàn thành</option>
+                        <option value="overdue">Quá hạn</option>
                     </select>
                 </div>
                 <div class="modal-footer">
@@ -449,6 +476,7 @@
                         <option value="todo">Chưa bắt đầu</option>
                         <option value="inprogress">Đang thực hiện</option>
                         <option value="done">Hoàn thành</option>
+                        <option value="overdue">Quá hạn</option>
                     </select>
                 </div>
                 <div class="modal-footer">
